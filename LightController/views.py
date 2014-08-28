@@ -24,7 +24,7 @@ class LightViewSet(viewsets.ReadOnlyModelViewSet):
 
         return super(LightViewSet, self).update(request, *args, **kwargs)
 
-    @action(methods=['PATCH'])
+    @action(methods=['PUT'])
     def set_color(self, request, pk=None):
 
         light = self.get_object()
@@ -49,7 +49,7 @@ class LightViewSet(viewsets.ReadOnlyModelViewSet):
 
         return Response({'status': status})
 
-    @action(methods=['PATCH'])
+    @action(methods=['PUT'])
     def set_delay(self, request, pk=None):
 
         light = self.get_object()
@@ -74,7 +74,7 @@ class LightViewSet(viewsets.ReadOnlyModelViewSet):
 
         return Response({'status': status})
 
-    @action(methods=['PATCH'])
+    @action(methods=['PUT'])
     def set_brightness(self, request, pk=None):
 
         light = self.get_object()
