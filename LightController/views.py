@@ -28,20 +28,19 @@ class LightViewSet(viewsets.ReadOnlyModelViewSet):
     def set_color(self, request, pk=None):
 
         light = self.get_object()
-        controller_path = light.controller.path
 
+        # get the serial controller to use, and the new value to set
+        controller_path = light.controller.path
         new_color = int(request.DATA['color'], 0)
 
+        # open serial port and send command
         ser = serial.Serial(controller_path, 9600, timeout=1)
-
         ser.write("SETCOL " + str(new_color))
-
         status = ser.readline()
-
         ser.close()
 
+        # update the database for fun.
         serializer = LightSerializer(data=request.DATA)
-
         if serializer.is_valid():
             light.color = new_color
             light.save()
@@ -49,6 +48,57 @@ class LightViewSet(viewsets.ReadOnlyModelViewSet):
         print self
 
         return Response({'status': status})
+
+    @action(methods=['PATCH'])
+    def set_delay(self, request, pk=None):
+
+        light = self.get_object()
+
+        # get the serial controller to use, and the new value to set
+        controller_path = light.controller.path
+        delay = request.DATA['delay']
+
+        # open serial port and send command
+        ser = serial.Serial(controller_path, 9600, timeout=1)
+        ser.write("SETDLY " + str(delay))
+        status = ser.readline()
+        ser.close()
+
+        # update the database for fun.
+        serializer = LightSerializer(data=request.DATA)
+        if serializer.is_valid():
+            light.delay = delay
+            light.save()
+
+        print self
+
+        return Response({'status': status})
+
+    @action(methods=['PATCH'])
+    def set_brightness(self, request, pk=None):
+
+        light = self.get_object()
+
+        # get the serial controller to use, and the new value to set
+        controller_path = light.controller.path
+        brightness = request.DATA['brightness']
+
+        # open serial port and send command
+        ser = serial.Serial(controller_path, 9600, timeout=1)
+        ser.write("SETBRT " + str(brightness))
+        status = ser.readline()
+        ser.close()
+
+        # update the database for fun.
+        serializer = LightSerializer(data=request.DATA)
+        if serializer.is_valid():
+            light.brightness = brightness
+            light.save()
+
+        print self
+
+        return Response({'status': status})
+
 
 
 class ControllerViewSet(viewsets.ReadOnlyModelViewSet):

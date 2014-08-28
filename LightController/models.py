@@ -10,6 +10,7 @@ class Light(models.Model):
     on = models.BooleanField(default=False)
     color = models.PositiveIntegerField(default=0)
     brightness = models.PositiveSmallIntegerField(default=0)
+    delay = models.PositiveSmallIntegerField(default=0)
 
     def __unicode__(self):  # Python 3: def __str__(self):
         return self.description
